@@ -20,3 +20,16 @@ def test_get_dict(foo, bar, baz):
         php.get_dict('mapping', [foo, bar, baz]) ==
         dict(foo=foo, bar=bar, baz=baz)
     )
+
+@pytest.mark.parametrize(('foo', 'bar', 'baz'), [
+    (1, 2, 3)
+])
+def test_wrong_php_file(foo, bar, baz):
+    php = PHP("wront_php_file")
+
+    try:
+        php.get_dict('mapping', [foo, bar, baz])
+        
+        assert False        
+    except Exception as e:
+        assert True

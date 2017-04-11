@@ -37,10 +37,15 @@ class PHP:
                                     self.__join_arguments(arguments))
         p.stdin.close()
         result = p.stdout.read()
+        stderr_data = p.stderr.read()
+
         if result.find('include(): Failed opening') > 0:
             raise PHPFileDoesNotExist(result)
         if result.find('Warning: ') > 0 and result.find('on line ') > 0:
             raise PHPWarning(result)
+
+        if p.returncode != None:
+            raise Exception(stderr_data)
 
         return result
 
